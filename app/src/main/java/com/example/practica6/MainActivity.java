@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         info = findViewById(R.id.et_info);
-        String archivos[] = fileList();
+        String[] archivos = fileList();
 
         if (archivoExiste(archivos, ARCHIVO)) {
             try {
@@ -32,8 +32,8 @@ public class MainActivity extends AppCompatActivity {
                 String line = buffer.readLine();
                 while (line != null) {
                     data += line+"\n";
+                    line = buffer.readLine();
                 }
-
                 buffer.close();
                 reader.close();
                 info.setText(data);
@@ -55,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
         try {
             OutputStreamWriter writer = new OutputStreamWriter(openFileOutput(ARCHIVO, MODE_PRIVATE));
             writer.write(info.getText().toString());
+            writer.flush();
+            writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
